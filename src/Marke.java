@@ -1,0 +1,3 @@
+public enum Marke {
+    AUDI, BMW, FORD, TOYOTA, SUBARU, BENTLEY, NISSAN, KIA, JEEP, PORSCHE;
+}
