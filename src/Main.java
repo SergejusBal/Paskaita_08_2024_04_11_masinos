@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         //////////////////////////////////////////////////////////////////
-        ////////////// Uzduotis nuoma
+        ////////////// Uzduotis Prideti
 
         Nuoma nuoma = new Nuoma();
 
@@ -83,8 +83,5 @@ public class Main {
         }
 
         System.out.println(autoparkas);
-
-
-
     }
 }
