@@ -12,6 +12,7 @@ public class AutomobiliuDuomenuModifikatorius extends Automobilis {
             try {
                 t = scanner.nextInt();
             } catch (InputMismatchException e) {
+                scanner.nextLine();
                 System.out.println(ERROR);
                 modifikuotiAutomobili(automobilis);
                 return;
@@ -26,6 +27,7 @@ public class AutomobiliuDuomenuModifikatorius extends Automobilis {
         try {
             t = scanner.nextInt();
         } catch (InputMismatchException e) {
+            scanner.nextLine();
             System.out.println(ERROR);
             modifikuotiAutomobili(automobilis);
             return;
@@ -36,9 +38,11 @@ public class AutomobiliuDuomenuModifikatorius extends Automobilis {
 
     public void keistiRida(Automobilis automobilis){
         int t = 0;
+        System.out.println("Ivesikite nauja rida");
         try {
             t = scanner.nextInt();
         } catch (InputMismatchException e) {
+            scanner.nextLine();
             System.out.println(ERROR);
             keistiRida(automobilis);
             return;

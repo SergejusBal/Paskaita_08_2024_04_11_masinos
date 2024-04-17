@@ -22,19 +22,35 @@ public class Nuoma {
         return automobiliuNuomosSarasas;
     }
 
+    public ArrayList<Klientas> getKlientuSarasas() {
+        return klientuSarasas;
+    }
+
     public void setAutomobiliuNuomosSarasas(ArrayList<Automobilis> automobiliuNuomosSarasas) {
         this.automobiliuNuomosSarasas = automobiliuNuomosSarasas;
     }
 
-    public void priskirtiAutomobili(Klientas klientas, Automobilis auto){
-        klientas.setNuomojamasAuto(auto);
+    public void setKlientuSarasas(ArrayList<Klientas> klientuSarasas) {
+        this.klientuSarasas = klientuSarasas;
     }
-    public void pabaigtiNuoma(Klientas klientas, Integer dienos){
-        Automobilis auto = klientas.getNuomojamasAuto();
-        addAutomobilis(auto);
-        klientas.setNuomojamasAuto(null);
-        klientas.getAutomobiliuSarasas().put(auto, dienos);
-        klientas.setPaskutinisNuomotasAuto(auto);
+
+    public void priskirtiAutomobili(Klientas klientas, Automobilis auto, Integer dienos){
+        klientas.setNuomojamasAuto(auto);
+        klientas.getAutomobiliuSarasas().put(auto,dienos);
+    }
+    public void pabaigtiNuoma(){
+        Klientas klientas = nuskanuotiKlienta();
+        Klientas rastasKlientas = rastiKlienta(klientas);
+        if(rastiKlienta(klientas) !=  null) {
+            Automobilis auto = rastasKlientas.getNuomojamasAuto();
+            addAutomobilis(auto);
+            rastasKlientas.setNuomojamasAuto(null);
+            rastasKlientas.setPaskutinisNuomotasAuto(auto);
+        }
+        else {
+            System.out.println("Tokio kliento nera");
+            pabaigtiNuoma();
+        }
     }
 
     public void addAutomobilis(){
@@ -57,10 +73,8 @@ public class Nuoma {
         int dienu = nuskaityriDienuSkaiciu();
         Automobilis nuomojamasAuto = nuskaitytiNuomojamaAuto();
         Klientas nuomininkas = pasirinktiKlienta();
-        priskirtiAutomobili(nuomininkas, nuomojamasAuto);
-
+        priskirtiAutomobili(nuomininkas, nuomojamasAuto, dienu);
         System.out.println("Automobilis Isnuomota uz: " + ( nuomojamasAuto.getKaina() * dienu ));
-        System.out.println("**************************************************************");
         automobiliuNuomosSarasas.remove(nuomojamasAuto);
         return nuomojamasAuto;
     }
@@ -71,10 +85,10 @@ public class Nuoma {
             System.out.println("Toks klientas jau yra");
         }
         klientuSarasas.add(klientas);
+        return klientas;
     }
 
     private Klientas rastiKlienta(Klientas klientas){
-        klientas = nuskanuotiKlienta();
         for(int i = 0; i < klientuSarasas.size(); i ++){
             if(klientas.getKlientoID() == klientuSarasas.get(i).getKlientoID()){
                 return klientuSarasas.get(i);
@@ -103,7 +117,12 @@ public class Nuoma {
                 return pridetiKleinta();
             case 2:
                 Klientas klientas = nuskanuotiKlienta();
-                return rastiKlienta(klientas);
+                Klientas rastasKlientas = rastiKlienta(klientas);
+                if(rastiKlienta(klientas) == null){
+                    System.out.println("Tokio kliento nera");
+                    return pasirinktiKlienta();
+                }
+                else return rastasKlientas;
         }
         return new Klientas();
     }

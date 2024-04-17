@@ -21,9 +21,9 @@ public class ElektrinisAutomobilis extends Automobilis{
                 "marke = " + super.getMarke() + "\n" +
                 "modelis = " + super.getModelis() + "\n" +
                 "metai = " + super.getMetai() +  "\n" +
-                "kaina = " + super.getModelis() + "\n" +
+                "kaina = " + super.getKaina() + "\n" +
                 "Krovimo laikas = " + krovimoLaikash + "\n" +
-                "Rida: " + getRida();
+                "Rida: " + getRida() + "\n";
 
     }
 }

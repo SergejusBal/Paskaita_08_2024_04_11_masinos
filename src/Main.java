@@ -1,4 +1,5 @@
 import java.sql.SQLOutput;
+import java.util.HashMap;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -24,14 +25,6 @@ public class Main {
             nuoma.addAutomobilis();
         }
 
-        while(true){
-            System.out.println("Ar norite nuomoti automobili?(T/N)");
-            if(!nuoma.atsakymas()) break;
-            System.out.println(nuoma.nuomoti());
-        }
-
-
-
         Autoparkas autoparkas = new Autoparkas();
         autoparkas.setAutomobiliuNuomosSarasas(nuoma.getAutomobiliuNuomosSarasas());
         System.out.println(autoparkas);
@@ -43,7 +36,7 @@ public class Main {
         int i = 0;
         Automobilis automobilis;
         while(true){
-            System.out.println("Ar norite keisti duomenys?(T/N)");
+            System.out.println("Ar norite keisti automobiliu duomenys?(T/N)");
             if(!nuoma.atsakymas()) break;
             automobilis = nuoma.getAutomobiliuNuomosSarasas().get(i);
             System.out.println(automobilis);
@@ -59,11 +52,39 @@ public class Main {
             if(!nuoma.atsakymas()) break;
             automobilis = nuoma.getAutomobiliuNuomosSarasas().get(i);
             System.out.println(automobilis);
-            System.out.println("Ivesikite nauja rida");
             automobiliuDuomenuModifikatorius.keistiRida(nuoma.getAutomobiliuNuomosSarasas().get(i));
             System.out.println(automobilis);
             i++;
         }
+
+        //////////////////////////////////////////////////////////////////////////////
+        ////////////// Uzduotis Kleintas
+
+        Klientas klientas = new Klientas("Jonas", "Jonaitis");
+        klientas.setKlientoID(2);
+        nuoma.getKlientuSarasas().add(klientas);
+
+        while(true){
+            System.out.println("Ar norite nuomoti automobili?(T/N)");
+            if(!nuoma.atsakymas()) break;
+            System.out.println(nuoma.nuomoti());
+            System.out.println("Prasome Grazinti automobili"); // reikia ivesti buten ta pati kliento id
+            nuoma.pabaigtiNuoma();
+
+        }
+
+        System.out.println();
+        System.out.println();
+        System.out.println(nuoma.getKlientuSarasas());
+
+        for(Klientas k: nuoma.getKlientuSarasas()){
+            System.out.println(k.getVardas());
+            System.out.println(k.getAutomobiliuSarasas());
+        }
+
+        System.out.println(autoparkas);
+
+
 
     }
 }

@@ -10,11 +10,14 @@ public class Klientas {
 
     private HashMap<Automobilis, Integer> automobiliuSarasas;
 
-    public Klientas(){}
+    public Klientas(){
+        automobiliuSarasas = new HashMap<>();
+    }
     public Klientas(String vardas, String pavarde){
         this.vardas = vardas;
         this.pavarde = pavarde;
         automobiliuSarasas = new HashMap<>();
+
     }
 
 
