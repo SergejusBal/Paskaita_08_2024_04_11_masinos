@@ -3,6 +3,15 @@ public class Automobilis {
     private String modelis;
     private int metai;
     private double kaina;
+    private int rida;
+
+    public int getRida() {
+        return rida;
+    }
+
+    public void setRida(int rida) {
+        this.rida = rida;
+    }
 
     public Automobilis(){
 

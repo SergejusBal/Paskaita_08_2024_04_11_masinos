@@ -8,10 +8,13 @@ import java.util.Scanner;
 public class Nuoma {
 
     Scanner scanner;
-
+    private static String ERRORZINUTE = "Ivyko Klaida, bandykite dar karta.";
     private ArrayList<Automobilis> automobiliuNuomosSarasas;
+    private ArrayList<Klientas> klientuSarasas;
+
     Nuoma(){
         automobiliuNuomosSarasas = new ArrayList<>();
+        klientuSarasas = new ArrayList<>();
         scanner = new Scanner(System.in);
     }
 
@@ -23,46 +26,15 @@ public class Nuoma {
         this.automobiliuNuomosSarasas = automobiliuNuomosSarasas;
     }
 
-    public Automobilis irasytiAuto(){
-        int tipas;
-        Automobilis automobilis = null;
-        try{
-            System.out.println("Pasirintike automobilio tipa: Ekektromobilis 1 Naftos kuro 2");
-            tipas = scanner.nextInt();
-            switch (tipas){
-                case 1:
-                    System.out.println("Iveskite krovimo laika (val)");
-                    automobilis = new ElektrinisAutomobilis();
-                    ((ElektrinisAutomobilis) automobilis).setKrovimoLaikash(scanner.nextInt());
-                    break;
-                case 2:
-                    System.out.println("Iveskite kuro suvartojima 100 km");
-                    automobilis = new NaftosKuroAutomobilis();
-                    ((NaftosKuroAutomobilis) automobilis).setDegaluVartojimas(scanner.nextInt());
-                    break;
-                default:
-                    System.out.println("Ivyko klaida bandykite dar karta");
-                    irasytiAuto();
-                    return automobilis;
-            }
-            scanner.nextLine(); // kodel reikia suvalgyti cia?
-
-            System.out.println("Pasirinkite marke: (galimos markes:  AUDI, BMW, FORD, TOYOTA, SUBARU, BENTLEY, NISSAN, KIA, JEEP, PORSCHE;");
-            automobilis.setMarke(Marke.valueOf(scanner.nextLine()));
-            System.out.println("Iveskite modeli:");
-            automobilis.setModelis(scanner.nextLine());
-            System.out.println("Iveskite Nuomos kaina");
-            automobilis.setKaina(scanner.nextDouble());
-            System.out.println("Iveskite metus");
-            automobilis.setMetai(scanner.nextInt());
-        }catch(InputMismatchException | IllegalArgumentException e){
-            System.out.println("Ivyko klaida bandykite dar karta");
-            scanner.nextLine();
-            irasytiAuto();
-            return automobilis;
-        }
-
-        return automobilis;
+    public void priskirtiAutomobili(Klientas klientas, Automobilis auto){
+        klientas.setNuomojamasAuto(auto);
+    }
+    public void pabaigtiNuoma(Klientas klientas, Integer dienos){
+        Automobilis auto = klientas.getNuomojamasAuto();
+        addAutomobilis(auto);
+        klientas.setNuomojamasAuto(null);
+        klientas.getAutomobiliuSarasas().put(auto, dienos);
+        klientas.setPaskutinisNuomotasAuto(auto);
     }
 
     public void addAutomobilis(){
@@ -72,42 +44,226 @@ public class Nuoma {
         automobiliuNuomosSarasas.add(automobilis);
     }
 
-    public Automobilis nuomoti(){
-        int dienu = 0;
-        System.out.println("Kokiam laikotarpiui norite nuomoti(dienos)");
-        try {
-             dienu = scanner.nextInt();
-        }catch (InputMismatchException e){
-            scanner.nextLine();
-            System.out.println("Ivyko klaida");
-            return nuomoti();
-        }
+    public Automobilis irasytiAuto(){
+        Automobilis automobilis = gautiAutomobilioTipa();
+        automobilis.setMarke(gautiMarke());
+        automobilis.setModelis(gautiAutomobilioModeli());
+        automobilis.setKaina(gautiAutomobilioNuomosKaina());
+        automobilis.setMetai(gautiAutomobilioMetus());
+        return automobilis;
+    }
 
-        System.out.println("Koki Automobili nuorite isnuomoti? ");
-        Automobilis automobilis = irasytiAuto();
+    public Automobilis nuomoti(){
+        int dienu = nuskaityriDienuSkaiciu();
+        Automobilis nuomojamasAuto = nuskaitytiNuomojamaAuto();
+        Klientas nuomininkas = pasirinktiKlienta();
+        priskirtiAutomobili(nuomininkas, nuomojamasAuto);
+
+        System.out.println("Automobilis Isnuomota uz: " + ( nuomojamasAuto.getKaina() * dienu ));
+        System.out.println("**************************************************************");
+        automobiliuNuomosSarasas.remove(nuomojamasAuto);
+        return nuomojamasAuto;
+    }
+
+    public Klientas pridetiKleinta(){
+        Klientas klientas = nuskanuotiKlienta();
+        if(rastiKlienta(klientas) != null){
+            System.out.println("Toks klientas jau yra");
+        }
+        klientuSarasas.add(klientas);
+    }
+
+    private Klientas rastiKlienta(Klientas klientas){
+        klientas = nuskanuotiKlienta();
+        for(int i = 0; i < klientuSarasas.size(); i ++){
+            if(klientas.getKlientoID() == klientuSarasas.get(i).getKlientoID()){
+                return klientuSarasas.get(i);
+            }
+        }
+        return null;
+    }
+    private Automobilis nuskaitytiNuomojamaAuto(){
+        System.out.println("Koki norite issinuomoti automobili?");
+        Automobilis automobilis = gautiAutomobilioTipa();
+        automobilis.setMarke(gautiMarke());
+        automobilis.setModelis(gautiAutomobilioModeli());
+        automobilis.setMetai(gautiAutomobilioMetus());
+
+        Automobilis rastasAutomobilis = rastiAutomobili(automobilis);
+        if(rastasAutomobilis == null) return nuskaitytiNuomojamaAuto();
+        return rastasAutomobilis;
+    }
+
+    private Klientas pasirinktiKlienta(){
+        System.out.println("Prasome pasirinkti: Naujas Klientas (1), Senas Klientas (2)");
+        int pasirinkimas = nuskanuotiIntVerte();
+
+        switch (pasirinkimas){
+            case 1:
+                return pridetiKleinta();
+            case 2:
+                Klientas klientas = nuskanuotiKlienta();
+                return rastiKlienta(klientas);
+        }
+        return new Klientas();
+    }
+
+    private Klientas nuskanuotiKlienta(){
+        Klientas klientas = new Klientas();
+        System.out.println("Irasykite varda:");
+        klientas.setVardas(nuskanuotiStringVerte());
+        System.out.println("Irasykite pavarde:");
+        klientas.setPavarde(nuskanuotiStringVerte());
+        System.out.println("Iveskite klineto ID");
+        klientas.setKlientoID(nuskanuotiIntVerte());
+        return klientas;
+    }
+
+
+    private Automobilis rastiAutomobili(Automobilis automobilis){
         int index = -1;
-        for(int i = 0; i < automobiliuNuomosSarasas.size();i++){
-            if(automobilis.equals(automobiliuNuomosSarasas.get(i)) &&  automobiliuNuomosSarasas.get(i) instanceof ElektrinisAutomobilis) {
+        for(int i = 0; i < automobiliuNuomosSarasas.size(); i++){
+
+            if      (
+                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
+                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
+                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
+                    automobiliuNuomosSarasas.get(i) instanceof ElektrinisAutomobilis
+            ) {
+
                 index = i;
                 break;
-            }else if (automobilis.equals(automobiliuNuomosSarasas.get(i)) &&  automobiliuNuomosSarasas.get(i) instanceof NaftosKuroAutomobilis) {
+            }
+            else if (
+                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
+                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
+                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
+                    automobiliuNuomosSarasas.get(i) instanceof NaftosKuroAutomobilis
+            ) {
+
                 index = i;
                 break;
             }
         }
-
-        if (index == -1){
+        if (index == -1) {
             System.out.println("Tokio Automobilio nera");
             return null;
-        } else if (automobilis.getKaina() < automobiliuNuomosSarasas.get(index).getKaina()) {
-            System.out.println("Uz tokia kaina automobilio nenuomojame");
-            return null;
-        }
-        System.out.println("Nuomos kaina yra: " + ( automobiliuNuomosSarasas.get(index).getKaina() * dienu ));
-        System.out.println("**************");
-        automobiliuNuomosSarasas.remove(index);
-        return automobilis;
+        }else {
+
+        }  return automobiliuNuomosSarasas.get(index);
     }
+
+    private int gautiAutomobilioMetus(){
+        System.out.println("Iveskite metus");
+        return nuskanuotiIntVerte();
+    }
+
+    private int nuskaityriDienuSkaiciu(){
+        System.out.println("Kokiam laikotarpiui norite nuomoti(dienos)");
+        return nuskanuotiIntVerte();
+    }
+
+    private double gautiAutomobilioNuomosKaina(){
+        System.out.println("Iveskite Nuomos kaina");
+        return nuskanuotiDoubleVerte();
+    }
+
+    private String gautiAutomobilioModeli(){
+        System.out.println("Iveskite modeli:");
+        return nuskanuotiStringVerte();
+    }
+
+    private Automobilis gautiAutomobilioTipa(){
+        System.out.println("Pasirintike automobilio tipa: \nEkektromobilis (1) NaftosKuro (2)");
+        return nuskanuotiAutomobilioTipa();
+    }
+
+    private Automobilis nuskanuotiAutomobilioTipa() {
+        int tipas = -1;
+        tipas = nuskanuotiIntVerte();
+
+        Automobilis automobilis;
+            switch (tipas) {
+                case 1:
+                    automobilis = new ElektrinisAutomobilis();
+                    ((ElektrinisAutomobilis) automobilis).setKrovimoLaikash(gautiKrovimoLaika());
+                    break;
+                case 2:
+                    automobilis = new NaftosKuroAutomobilis();
+                    ((NaftosKuroAutomobilis) automobilis).setDegaluVartojimas(gautiDegaluVartojima());
+                    break;
+                default:
+                    System.out.println(ERRORZINUTE);
+                    return nuskanuotiAutomobilioTipa();
+            }
+        return new Automobilis();
+    }
+
+
+    private int gautiKrovimoLaika(){
+        System.out.println("Iveskite krovimo laika (val)");
+        return nuskanuotiIntVerte();
+    }
+
+    private int gautiDegaluVartojima(){
+        System.out.println("Iveskite kuro suvartojima 100 km");
+        return nuskanuotiIntVerte();
+    }
+
+
+    private Marke gautiMarke() {
+        System.out.println("Pasirinkite marrke: \n" +
+                "AUDI (1), BMW (2), FORD (3), TOYOTA (4), SUBARU (5), BENTLEY (6), NISSAN (7), KIA (8), JEEP (9), PORSCHE (10)");
+        return nuskatuotiMarke();
+    }
+
+    private Marke nuskatuotiMarke() {
+        int index = nuskanuotiIntVerte()-1;
+
+        if (index > Marke.values().length - 1) {
+            System.out.println(ERRORZINUTE);
+            return nuskatuotiMarke();
+        }
+        return Marke.values()[index];
+    }
+
+
+    private String nuskanuotiStringVerte(){
+        return nuskaityti();
+    }
+
+    private int nuskanuotiIntVerte(){
+        int i;
+        try {
+            i = Integer.parseInt(nuskaityti());
+        } catch (NumberFormatException e) {
+            System.out.println(ERRORZINUTE);
+            return nuskanuotiIntVerte();
+        }
+        return i;
+    }
+
+    private double nuskanuotiDoubleVerte(){
+        double i;
+        try {
+            i = Double.parseDouble(nuskaityti());
+        } catch (NumberFormatException e) {
+            System.out.println(ERRORZINUTE);
+            return nuskanuotiDoubleVerte();
+        }
+        return i;
+    }
+
+    private String nuskaityti(){
+        String verte = null;
+        try {
+            verte = scanner.nextLine();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return verte;
+    }
+
     public void alfaModeliai(int kiekis){
         Automobilis automobilis = null;
         Random random = new Random();
@@ -128,8 +284,9 @@ public class Nuoma {
             automobilis.setMarke(Marke.values()[random.nextInt(0,Marke.values().length)]);
             automobiliuNuomosSarasas.add(automobilis);
         }
-
     }
+
+
     public boolean atsakymas() {
         while(true) {
             String scVerte = scanner.nextLine();

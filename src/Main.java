@@ -6,6 +6,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+        //////////////////////////////////////////////////////////////////
+        ////////////// Uzduotis nuoma
+
         Nuoma nuoma = new Nuoma();
 
         Automobilis elektrinisAutomobilis = new ElektrinisAutomobilis(Marke.BMW, "x5", 2015, 200,10);
@@ -13,7 +16,7 @@ public class Main {
         nuoma.addAutomobilis(elektrinisAutomobilis);
         nuoma.addAutomobilis(naftosKuroAutomobilis);
 
-        nuoma.alfaModeliai(50); // Sugeneruoja atsitiktinius automobilius
+        nuoma.alfaModeliai(2); // Sugeneruoja atsitiktinius automobilius
 
         while(true){
             System.out.println("Ar norite prideti automonili i automobiliu parka?(T/N)");
@@ -28,14 +31,39 @@ public class Main {
         }
 
 
+
         Autoparkas autoparkas = new Autoparkas();
         autoparkas.setAutomobiliuNuomosSarasas(nuoma.getAutomobiliuNuomosSarasas());
-
         System.out.println(autoparkas);
 
+        //////////////////////////////////////////////////////////////////////////////
+        ////////////// Uzduotis AutomobiliuDuomenuModifikatorius
 
+        AutomobiliuDuomenuModifikatorius automobiliuDuomenuModifikatorius = new AutomobiliuDuomenuModifikatorius();
+        int i = 0;
+        Automobilis automobilis;
+        while(true){
+            System.out.println("Ar norite keisti duomenys?(T/N)");
+            if(!nuoma.atsakymas()) break;
+            automobilis = nuoma.getAutomobiliuNuomosSarasas().get(i);
+            System.out.println(automobilis);
+            if(automobilis instanceof ElektrinisAutomobilis)  automobiliuDuomenuModifikatorius.modifikuotiAutomobili((ElektrinisAutomobilis) automobilis);
+            else if(automobilis instanceof NaftosKuroAutomobilis)  automobiliuDuomenuModifikatorius.modifikuotiAutomobili((NaftosKuroAutomobilis) automobilis);
+            System.out.println(automobilis);
+            i++;
+        }
 
-
+        i = 0;
+        while(true){
+            System.out.println("Ar norite keisti ridas?(T/N)");
+            if(!nuoma.atsakymas()) break;
+            automobilis = nuoma.getAutomobiliuNuomosSarasas().get(i);
+            System.out.println(automobilis);
+            System.out.println("Ivesikite nauja rida");
+            automobiliuDuomenuModifikatorius.keistiRida(nuoma.getAutomobiliuNuomosSarasas().get(i));
+            System.out.println(automobilis);
+            i++;
+        }
 
     }
 }
