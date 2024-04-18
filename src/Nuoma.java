@@ -74,11 +74,11 @@ public class Nuoma {
         Automobilis nuomojamasAuto = nuskaitytiNuomojamaAuto();
         Klientas nuomininkas = pasirinktiKlienta();
         if(nuomininkas.getNuomojamasAuto() != null ){
-            System.out.println("Sis klientas jau issinuomavo automobili!");
+            System.out.println("Sis klientas jau yra issinuomaves automobili!");
             return nuomininkas.getNuomojamasAuto();
         }
         priskirtiAutomobili(nuomininkas, nuomojamasAuto, dienu);
-        System.out.println("Automobilis isnuomotas uz: " + ( nuomojamasAuto.getKaina() * dienu ));
+        System.out.println("Automobilis isnuomotas uz: " + ( nuomojamasAuto.getKaina() * dienu ) + " EUR");
         automobiliuNuomosSarasas.remove(nuomojamasAuto);
         return nuomojamasAuto;
     }

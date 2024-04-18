@@ -20,15 +20,15 @@ public class ValdimoUI {
         boolean dirbti = true;
         while(dirbti){
             System.out.println("************************Pasirinkite paslauga: ************************");
-            System.out.println("Prideti automobili i parka (1)");
-            System.out.println("Prideti klienta i nuomininku sarasa (2)");
-            System.out.println("Keisti automobiliu duomenys (3)");
-            System.out.println("Keisti automobiliu rida (4)");
-            System.out.println("Nuomoti automobili (5)");
-            System.out.println("Grazinti automobili (6)");
-            System.out.println("Patikrinti kliento automobiliu istorija (7)");
-            System.out.println("Spuzdinti automobiliu parka (8)");
-            System.out.println("Paigti darba (0)");
+            System.out.println("Prideti automobili i parka. (1)");
+            System.out.println("Prideti klienta i nuomininku sarasa. (2)");
+            System.out.println("Keisti automobiliu duomenys. (3)");
+            System.out.println("Keisti automobiliu rida. (4)");
+            System.out.println("Nuomoti automobili. (5)");
+            System.out.println("Grazinti automobili. (6)");
+            System.out.println("Patikrinti kliento automobiliu istorija. (7)");
+            System.out.println("Spausdinti automobiliu parka. (8)");
+            System.out.println("Pabaigti darba .(0)");
             int atsakymas = nuskanuotiIntVerte();
             int pasirinkimas;
 

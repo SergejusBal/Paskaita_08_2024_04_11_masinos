@@ -14,12 +14,13 @@ public class Main {
 
         Automobilis elektrinisAutomobilis = new ElektrinisAutomobilis(Marke.BMW, "x5", 2015, 200,10);
         Automobilis naftosKuroAutomobilis = new NaftosKuroAutomobilis(Marke.KIA, "Seltos", 2011, 100,7);
+
         nuoma.addAutomobilis(elektrinisAutomobilis);
         nuoma.addAutomobilis(naftosKuroAutomobilis);
         nuoma.alfaModeliai(50); // Sugeneruoja atsitiktinius automobilius
 
-
         Klientas klientas = new Klientas("Jonas", "Jonaitis");
+
         klientas.setKlientoID(2);
         nuoma.pridetiKleinta(klientas);
 
