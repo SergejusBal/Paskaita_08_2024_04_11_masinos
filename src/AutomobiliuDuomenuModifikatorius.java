@@ -1,21 +1,11 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class AutomobiliuDuomenuModifikatorius extends Automobilis {
+public abstract class AutomobiliuDuomenuModifikatorius {
 
     private Scanner scanner = new Scanner(System.in);
     private static String ERROR = "Ivyko Klaida, bandykite dar karta.";
 
-    public void modifikuotiAutomobili (ElektrinisAutomobilis automobilis) {
-        System.out.println("Iveskite baterijos talpa:");
-        automobilis.setKrovimoLaikash(nuskanuotiIntVerte());
-    }
-
-    public void modifikuotiAutomobili (NaftosKuroAutomobilis automobilis) {
-        System.out.println("Iveskite kuro vartojima 100 km:");
-        automobilis.setDegaluVartojimas(nuskanuotiIntVerte());
-    }
-
+    public abstract void pakeistiParametrus(Automobilis automobilis);
 
     public void keistiRida(Automobilis automobilis){
         System.out.println("Ivesikite nauja rida");

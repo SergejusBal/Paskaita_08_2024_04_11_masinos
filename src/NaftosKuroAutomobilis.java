@@ -25,7 +25,7 @@ public class NaftosKuroAutomobilis extends Automobilis{
                 "metai = " + super.getMetai() +  " *** " +
                 "kaina = " + super.getModelis() + " *** " +
                 "Degalu vartojimas = " + degaluVartojimas + " *** " +
-                "Rida: " + getRida() + " \n";
+                "Rida: " + getRida() ;
     }
 }
 

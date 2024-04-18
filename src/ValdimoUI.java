@@ -5,6 +5,7 @@ public class ValdimoUI {
     private Nuoma nuomosInfo;
     private Autoparkas autoparkas;
     private AutomobiliuDuomenuModifikatorius automobiliuDuomenuModifikatorius;
+
     private Scanner scanner;
     private static String ERRORZINUTE = "Ivyko Klaida, bandykite dar karta.";
 
@@ -13,7 +14,6 @@ public class ValdimoUI {
         scanner = new Scanner(System.in);
         autoparkas = new Autoparkas();
         autoparkas.setAutomobiliuNuomosSarasas(nuomosInfo.getAutomobiliuNuomosSarasas());
-        automobiliuDuomenuModifikatorius = new AutomobiliuDuomenuModifikatorius();
     }
 
     public void paleistiUI(){
@@ -28,7 +28,7 @@ public class ValdimoUI {
             System.out.println("Grazinti automobili. (6)");
             System.out.println("Patikrinti kliento automobiliu istorija. (7)");
             System.out.println("Spausdinti automobiliu parka. (8)");
-            System.out.println("Pabaigti darba .(0)");
+            System.out.println("Pabaigti darba. (0)");
             int atsakymas = nuskanuotiIntVerte();
             int pasirinkimas;
 
@@ -49,8 +49,14 @@ public class ValdimoUI {
                         Automobilis automobilis = nuomosInfo.getAutomobiliuNuomosSarasas().get(pasirinkimas-1);
                         System.out.println("Pasirinktas automobilis");
                         System.out.println(automobilis);
-                        if(automobilis instanceof ElektrinisAutomobilis)  automobiliuDuomenuModifikatorius.modifikuotiAutomobili((ElektrinisAutomobilis) automobilis);
-                        else if(automobilis instanceof NaftosKuroAutomobilis)  automobiliuDuomenuModifikatorius.modifikuotiAutomobili((NaftosKuroAutomobilis) automobilis);
+                        if(automobilis instanceof ElektrinisAutomobilis){
+                            automobiliuDuomenuModifikatorius = new EV();
+                            automobiliuDuomenuModifikatorius.pakeistiParametrus(automobilis);
+                        }
+                        else if(automobilis instanceof NaftosKuroAutomobilis)  {
+                            automobiliuDuomenuModifikatorius = new NKA();
+                            automobiliuDuomenuModifikatorius.pakeistiParametrus(automobilis);
+                        }
                         System.out.println("Modifikuotas automobilis");
                         System.out.println(automobilis);
                     } else {
@@ -67,7 +73,14 @@ public class ValdimoUI {
                         Automobilis automobilis = nuomosInfo.getAutomobiliuNuomosSarasas().get(pasirinkimas-1);
                         System.out.println("Pasirinktas automobilis");
                         System.out.println(automobilis);
-                        automobiliuDuomenuModifikatorius.keistiRida(nuomosInfo.getAutomobiliuNuomosSarasas().get(pasirinkimas-1));
+                        if(automobilis instanceof ElektrinisAutomobilis){
+                            automobiliuDuomenuModifikatorius = new EV();
+                            automobiliuDuomenuModifikatorius.keistiRida(nuomosInfo.getAutomobiliuNuomosSarasas().get(pasirinkimas-1));
+                        }
+                        else if(automobilis instanceof NaftosKuroAutomobilis)  {
+                            automobiliuDuomenuModifikatorius = new NKA();
+                            automobiliuDuomenuModifikatorius.keistiRida(nuomosInfo.getAutomobiliuNuomosSarasas().get(pasirinkimas-1));
+                        }
                         System.out.println("Modifikuotas automobilis");
                         System.out.println(automobilis);
                     } else {

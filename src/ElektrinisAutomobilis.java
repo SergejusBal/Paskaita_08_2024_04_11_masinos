@@ -23,6 +23,6 @@ public class ElektrinisAutomobilis extends Automobilis{
                 "metai = " + super.getMetai() +  " *** " +
                 "kaina = " + super.getKaina() + " *** " +
                 "Krovimo laikas = " + krovimoLaikash + " *** " +
-                "Rida: " + getRida() + "\n";
+                "Rida: " + getRida();
     }
 }
