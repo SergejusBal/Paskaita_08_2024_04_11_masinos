@@ -19,13 +19,13 @@ public class NaftosKuroAutomobilis extends Automobilis{
 
     @Override
     public String toString() {
-        return  "Automobilis: \n" +
-                "marke = " + super.getMarke() + "\n" +
-                "modelis = " + super.getModelis() + "\n" +
-                "metai = " + super.getMetai() +  "\n" +
-                "kaina = " + super.getModelis() + "\n" +
-                "Degalu vartojimas = " + degaluVartojimas + "\n" +
-                "Rida: " + getRida() + "\n";
+        return  "NaftosKuro automobilis: " +
+                "marke = " + super.getMarke() + " *** " +
+                "modelis = " + super.getModelis() + " *** " +
+                "metai = " + super.getMetai() +  " *** " +
+                "kaina = " + super.getModelis() + " *** " +
+                "Degalu vartojimas = " + degaluVartojimas + " *** " +
+                "Rida: " + getRida() + " \n";
     }
 }
 

@@ -73,10 +73,18 @@ public class Nuoma {
         int dienu = nuskaityriDienuSkaiciu();
         Automobilis nuomojamasAuto = nuskaitytiNuomojamaAuto();
         Klientas nuomininkas = pasirinktiKlienta();
+        if(nuomininkas.getNuomojamasAuto() != null ){
+            System.out.println("Sis klientas jau issinuomavo automobili!");
+            return nuomininkas.getNuomojamasAuto();
+        }
         priskirtiAutomobili(nuomininkas, nuomojamasAuto, dienu);
-        System.out.println("Automobilis Isnuomota uz: " + ( nuomojamasAuto.getKaina() * dienu ));
+        System.out.println("Automobilis isnuomotas uz: " + ( nuomojamasAuto.getKaina() * dienu ));
         automobiliuNuomosSarasas.remove(nuomojamasAuto);
         return nuomojamasAuto;
+    }
+
+    public void pridetiKleinta(Klientas klientas){
+        klientuSarasas.add(klientas);
     }
 
     public Klientas pridetiKleinta(){
@@ -85,6 +93,15 @@ public class Nuoma {
             System.out.println("Toks klientas jau yra");
         }
         klientuSarasas.add(klientas);
+        return klientas;
+    }
+
+    public Klientas filtruotiKlienta(){
+        Klientas klientas = rastiKlienta(nuskanuotiKlienta());
+        if(klientas == null){
+            System.out.println("Tokio kliento nera");
+            return filtruotiKlienta();
+        }
         return klientas;
     }
 
@@ -145,8 +162,8 @@ public class Nuoma {
 
             if      (
                     automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
-                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
-                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
+                    automobilis.getModelis().equals(automobiliuNuomosSarasas.get(i).getModelis()) &&
+                    automobilis.getMetai() == automobiliuNuomosSarasas.get(i).getMetai() &&
                     automobiliuNuomosSarasas.get(i) instanceof ElektrinisAutomobilis
             ) {
 
@@ -155,8 +172,8 @@ public class Nuoma {
             }
             else if (
                     automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
-                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
-                    automobilis.getMarke().equals(automobiliuNuomosSarasas.get(i).getMarke()) &&
+                    automobilis.getModelis().equals(automobiliuNuomosSarasas.get(i).getModelis()) &&
+                    automobilis.getMetai() == automobiliuNuomosSarasas.get(i).getMetai() &&
                     automobiliuNuomosSarasas.get(i) instanceof NaftosKuroAutomobilis
             ) {
 
@@ -239,7 +256,7 @@ public class Nuoma {
     private Marke nuskatuotiMarke() {
         int index = nuskanuotiIntVerte()-1;
 
-        if (index > Marke.values().length - 1) {
+        if (index > Marke.values().length - 1 || index  <0) {
             System.out.println(ERRORZINUTE);
             return nuskatuotiMarke();
         }
@@ -287,11 +304,11 @@ public class Nuoma {
         Automobilis automobilis = null;
         Random random = new Random();
         for(int i = 0 ; i < kiekis; i++){
-            if(i/2==0) {
+            if(i % 2 == 0) {
                 automobilis = new ElektrinisAutomobilis();
                 ((ElektrinisAutomobilis) automobilis).setKrovimoLaikash(random.nextInt(4,10));
             }
-            else if(i/2!=0) {
+            else if(i % 2 != 0) {
                 automobilis = new NaftosKuroAutomobilis();
                 ((NaftosKuroAutomobilis) automobilis).setDegaluVartojimas(random.nextInt(4,10));
             }

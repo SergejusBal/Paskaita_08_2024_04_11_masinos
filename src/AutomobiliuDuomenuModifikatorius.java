@@ -4,50 +4,43 @@ import java.util.Scanner;
 public class AutomobiliuDuomenuModifikatorius extends Automobilis {
 
     private Scanner scanner = new Scanner(System.in);
-    private static String ERROR = "Ivyko klaida";
+    private static String ERROR = "Ivyko Klaida, bandykite dar karta.";
 
     public void modifikuotiAutomobili (ElektrinisAutomobilis automobilis) {
-                    int t = 0;
-            System.out.println("Iveskite kvovimo laika");
-            try {
-                t = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                scanner.nextLine();
-                System.out.println(ERROR);
-                modifikuotiAutomobili(automobilis);
-                return;
-            }
-             automobilis.setKrovimoLaikash(t);
+        System.out.println("Iveskite baterijos talpa:");
+        automobilis.setKrovimoLaikash(nuskanuotiIntVerte());
     }
 
     public void modifikuotiAutomobili (NaftosKuroAutomobilis automobilis) {
-
-        int t = 0;
-        System.out.println("Iveskite kuro sanaudas");
-        try {
-            t = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            scanner.nextLine();
-            System.out.println(ERROR);
-            modifikuotiAutomobili(automobilis);
-            return;
-        }
-         automobilis.setDegaluVartojimas(t);
+        System.out.println("Iveskite kuro vartojima 100 km:");
+        automobilis.setDegaluVartojimas(nuskanuotiIntVerte());
     }
 
 
     public void keistiRida(Automobilis automobilis){
-        int t = 0;
         System.out.println("Ivesikite nauja rida");
+        automobilis.setRida(nuskanuotiIntVerte());
+    }
+
+    private int nuskanuotiIntVerte(){
+        int i;
         try {
-            t = scanner.nextInt();
-        } catch (InputMismatchException e) {
-            scanner.nextLine();
+            i = Integer.parseInt(nuskaityti());
+        } catch (NumberFormatException e) {
             System.out.println(ERROR);
-            keistiRida(automobilis);
-            return;
+            return nuskanuotiIntVerte();
         }
-        automobilis.setRida(t);
+        return i;
+    }
+
+    private String nuskaityti(){
+        String verte = null;
+        try {
+            verte = scanner.nextLine();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return verte;
     }
 
 }

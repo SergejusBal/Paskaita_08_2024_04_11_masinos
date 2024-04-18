@@ -17,13 +17,12 @@ public class ElektrinisAutomobilis extends Automobilis{
     }
     @Override
     public String toString() {
-        return "Automobilis: \n" +
-                "marke = " + super.getMarke() + "\n" +
-                "modelis = " + super.getModelis() + "\n" +
-                "metai = " + super.getMetai() +  "\n" +
-                "kaina = " + super.getKaina() + "\n" +
-                "Krovimo laikas = " + krovimoLaikash + "\n" +
+        return "Elektrinis automobilis: " +
+                "marke = " + super.getMarke() + " *** " +
+                "modelis = " + super.getModelis() + "  *** " +
+                "metai = " + super.getMetai() +  " *** " +
+                "kaina = " + super.getKaina() + " *** " +
+                "Krovimo laikas = " + krovimoLaikash + " *** " +
                 "Rida: " + getRida() + "\n";
-
     }
 }
